@@ -1,0 +1,20 @@
+---
+title: "Supplementary Materials"
+format:
+  pdf:
+    keep-tex: false
+    fig-pos: "!t"
+    include-in-header: 
+      text: |
+        \usepackage{dcolumn}
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(here)
+source(here("utils","check_packages.R"))
+source(here("utils","functions.R"))
+```
+
+This document is for supplementary materials

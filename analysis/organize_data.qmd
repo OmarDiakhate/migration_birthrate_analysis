@@ -1,0 +1,13 @@
+---
+title: "Organize Data Notebook"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(here)
+source(here("utils","check_packages.R"))
+source(here("utils","functions.R"))
+```
+
+This quarto doc is used to organize the data.

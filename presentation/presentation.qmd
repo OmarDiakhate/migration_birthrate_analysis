@@ -1,0 +1,16 @@
+---
+title: "Presentation"
+subtitle: "A Thing I Did"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(here)
+source(here("utils","check_packages.R"))
+source(here("utils","functions.R"))
+```
+
+## Test Slide
+
+This document is for a quarto presentation.
