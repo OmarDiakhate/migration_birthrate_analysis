@@ -1,5 +1,5 @@
 project:
-  title: "Research Template"
+  title: "Migration/BirthRate Analysis"
   output-dir: _products
   execute-dir: project
   pre-render: 
@@ -14,21 +14,20 @@ project:
     - "!bibliography/"
 
 author:
-  - name: Aaron Gullickson
-    orcid: 0000-0001-7237-8131
-    email: aarong@uoregon.edu
-    url: https://aarongullickson.netlify.app/
+  - name: Omar Diakhate
+    orcid: 0009-0000-4688-1040
+    email: omard@uoregon.edu
     attributes:
       corresponding: true
     affiliations:
       - id: uo
         name: University of Oregon
-        department: Sociology
-        address: 727 PLC
+        department: Data Science
+        address: 959 Franklin Blvd.
         city: Eugene
         region: OR
         country: USA
-        postal-code: 97405
+        postal-code: 97403
   
 execute: 
   freeze: false
