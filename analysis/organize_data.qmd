@@ -10,4 +10,7 @@ source(here("utils","check_packages.R"))
 source(here("utils","functions.R"))
 ```
 
-This quarto doc is used to organize the data.
+```{r}
+# load and read in raw World Bank data csv
+world_bank_data <- read_csv("data/data_raw/world_bank_data.csv")
+View(world_bank_data)
