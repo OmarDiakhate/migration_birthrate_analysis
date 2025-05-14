@@ -12,5 +12,6 @@ source(here("utils","functions.R"))
 
 ```{r}
 # load and read in raw World Bank data csv
-world_bank_data <- read_csv("data/data_raw/world_bank_data.csv")
-View(world_bank_data)
+world_bank_data <- read_csv(here("data", "data_raw", "world_bank_data.csv"),
+                            na = "..")
+```
