@@ -37,22 +37,22 @@ This quarto doc is for writing the manuscript. This is a test citation [@alba199
 # Background
 
 # Data and Methods
+
 The data used for this project were sourced from the World Bank's World Development Indicators (WDI), a publicly accessible database that consists of globally comparable statistics on different developmental metrics throughout different countries. The primary indicators that were chosen for the project are:
 
-- Net Migration (SM.POP.NETM): the difference between number of immigrants and emigrants in a given year
-  
-- Total Fertility Rate (SP.DYN.TFRT.IN): the average number of children a woman would bear in her lifetime based on current age-specific rates
-  
-- GDP (constant 2015 US$) (NY.GDP.MKTP.KD): a country's inflation-adjusted economic output
-  
-- Urban Population (% of total) (SP.URB.TOTL.IN.ZS): the share of a countries population residing in urban areas
-  
-- Employment to Population Ratio, 15+, Female (%) (modeled ILO estimate) (SL.EMP.TOTL.SP.FE.ZS): the percentage of working-age females (15 and older) who are employed
-  
+-   Net Migration (SM.POP.NETM): the difference between number of immigrants and emigrants in a given year
+
+-   Total Fertility Rate (SP.DYN.TFRT.IN): the average number of children a woman would bear in her lifetime based on current age-specific rates
+
+-   GDP (constant 2015 US\$) (NY.GDP.MKTP.KD): a country's inflation-adjusted economic output
+
+-   Urban Population (% of total) (SP.URB.TOTL.IN.ZS): the share of a countries population residing in urban areas
+
+-   Employment to Population Ratio, 15+, Female (%) (modeled ILO estimate) (SL.EMP.TOTL.SP.FE.ZS): the percentage of working-age females (15 and older) who are employed
+
 The primary outcome variable (dependent variable) is the Total Fertility Rate (TFR), while the explanatory variable (independent variable) is the Net Migration Rate. To better understand the context and possible confounding factors, socioeconomic indicators including GDP, urban population percentage, and female employment percentages were also included.
-  
-This data was both collected and aggregated by the World Bank from international organizations and national statistical agencies, spanning from the years 1960 to 2024 (64 years). The raw data set contains data from 217 countries thus yielding thousands of individual data points.
-This data set is broadly generalizable as it spans across a wide range of national contexts and has an internationally standardized collection methodology.
+
+This data was both collected and aggregated by the World Bank from international organizations and national statistical agencies, spanning from the years 1960 to 2024 (64 years). The raw data set contains data from 217 countries thus yielding thousands of individual data points. This data set is broadly generalizable as it spans across a wide range of national contexts and has an internationally standardized collection methodology.
 
 # Results
 
