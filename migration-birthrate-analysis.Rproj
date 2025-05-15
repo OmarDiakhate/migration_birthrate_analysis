@@ -13,4 +13,4 @@ Encoding: UTF-8
 RnwWeave: Sweave
 LaTeX: pdfLaTeX
 
-ProjectName: migration_birthrate_analysis
+ProjectName: migration-birthrate-analysis
