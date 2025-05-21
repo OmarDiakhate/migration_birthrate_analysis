@@ -1,5 +1,5 @@
 ---
-title: "Paper Manuscript"
+title: "Exploring the Correlation Between Net Migration Rates and Birth Rates Overtime: A Cross-National Study"
 shorttitle: "Paper"
 abstract: An Abstract
 keywords: [keyword1, keyword2]
@@ -32,9 +32,7 @@ source(here("utils","functions.R"))
 
 # Introduction
 
-This quarto doc is for writing the manuscript. This is a test citation [@alba1990].
-
-# Background
+In today's society, both the demographic and economic implications of migration have become an extremely critical issue in regards to global development. Throughout this project, my goal is to investigate the relationship between net migration rates and total fertility rates (TFR) within host countries overtime, where I ask the question: How do changes in net migration rates correlate with subsequent changes in total fertility rates (TFR) within host countries over time, and what socioeconomic factors might mediate this relationship? When it comes to prior research, the relationship between fertility and socioeconomic development has been widely studied, but net migration in particular, especially at the national level, has not been given as much attention. Most of the existing literature focuses on the fertility behaviors of the migrants themselves, such as how they adapt to host-country culture and norms or how they maintain their own cultural practices. However, there are ample studies that have investigated how net migration flows impact the overall fertility rates of host countries over time. By utilizing a comprehensive data set taken from the World Bank's World Development Indicators, spanning over 60 years and including 217 countries, this project aims to provide a longitudinal, cross-national perspective on a topic that has been very country-specific in past research. Also, by incorporating socioeconomic controls such as GDP per capita, urbanization, and female employment rates, the project will offer better understanding of the factors that could possible mediate the relationship between migration and fertility rate. This will not only help with understanding transitions regarding demographics, but could also aid discussions on policy as well.
 
 # Data and Methods
 
