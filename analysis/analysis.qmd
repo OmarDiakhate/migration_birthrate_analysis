@@ -10,4 +10,7 @@ source(here("utils","check_packages.R"))
 source(here("utils","functions.R"))
 ```
 
-This quarto doc is used to analyze the data.
+```{r}
+# Read in analytical data
+load(here("data","data_constructed","analytical_data.RData"))
+```

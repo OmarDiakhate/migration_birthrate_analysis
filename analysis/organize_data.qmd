@@ -15,3 +15,51 @@ source(here("utils","functions.R"))
 world_bank_data <- read_csv(here("data", "data_raw", "world_bank_data.csv"),
                             na = "..")
 ```
+
+```{r}
+# Raw Data Organization -----------------------------------------
+
+# long-format data frame
+df_long <- world_bank_data |>
+  pivot_longer(
+    cols = matches("^19|20"),
+    names_to = "Year",
+    values_to = "Value"
+  ) |>
+  mutate(
+    Year = str_extract(Year, "^\\d{4}"), # Extracts first four digits
+    Year = as.integer(Year)
+  ) |>
+  rename(
+    CountryCode = `Country Code`,
+    Country = `Country Name`,
+    Indicator = `Series Name`,
+    SeriesCode = `Series Code`,
+  )
+
+df_long_clean <- df_long |>
+  filter(Indicator != "", !is.na(Indicator)) |> # filter out missing Indicator rows
+  group_by(Country, CountryCode, Year, Indicator) |>
+  summarize(Value = mean(Value, na.rm = TRUE, .groups = "drop"))
+
+# wide-format data frame 
+df_wide <- df_long_clean |>
+  pivot_wider(
+    names_from = Indicator,
+    values_from = Value
+  )
+
+cleaned_dataset <- df_wide |>
+  rename(
+    NetMigration = `Net migration`,
+    FertilityRate = `Fertility rate, total (births per woman)`,
+    GDP_2015USD = `GDP (constant 2015 US$)`,
+    UrbanPopPercent = `Urban population (% of total population)`,
+    FemaleEmpRatio = `Employment to population ratio, 15+, female (%) (modeled ILO estimate)`
+  )
+```
+
+```{r}
+# Save cleaned_dataset as RData file
+save(cleaned_dataset, file=here("data","data_constructed","analytical_data.RData"))
+```
