@@ -14,3 +14,104 @@ source(here("utils","functions.R"))
 # Read in analytical data
 load(here("data","data_constructed","analytical_data.RData"))
 ```
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(dplyr)
+library(gt)
+```
+
+## Exploratory Data Analysis (EDA)
+
+Below are some visualizations along with overall summary statistics that can be utilized to gain a better understanding of the relationship between the now standardized net migration and fertility rates over time in host countries. More specifically, I decided to include a line plot exploring the relationship between standardized net migration and fertility rates in a prominent host country, The United States, followed by a scatter plot showing the global relationship between fertility rate and standardized net migration, and finally a table containing the overall summary statistics of the data. 
+
+```{r}
+# filter for United States and reshape
+united_states_long <- cleaned_dataset |>
+  filter(country == "United States") |>
+  select(year, net_migration_z, fertility_rate) |>
+  pivot_longer(
+    cols = c(net_migration_z, fertility_rate),
+    names_to = "variable",
+    values_to = "value"
+  )
+```
+
+```{r}
+#| label: fig-lineplot-united-states
+#| fig-cap: "Lineplot of standardized net migration (Z-Score) and fertility rates in the United States of America over time"
+
+# line plot visualization
+ggplot(united_states_long, aes(x = year, y = value, color = variable)) +
+  geom_line() +
+  labs(
+    title = "Standardized Net Migration and Fertility Rate in The United States",
+    x = "Year",
+    y = "Value",
+    color = "Variable"
+  ) +
+  scale_color_manual(
+    values = c("net_migration_z" = "blue", "fertility_rate" = "red"),
+    labels = c("Net Migration (Z-Score)", "Fertility Rate")
+  )
+```
+Based on the line plot above, it appears that at least in the United States, fertility rates and net migration have not exhibited a strong temporal relationship over the past 60 years or so. While standardized net migration values remained generally above average throughout the past 6 decades, fertility saw a major increase around 1990, followed by a modest increase, and then a sharp decline around the COVID-19 pandemic and has started to recoup from that plummet. This lack of synchronization may suggest that in developed nations like the United States, fertility trends can be influenced more by internal social and economic factors rather than migration changes.  
+
+```{r}
+#| label: fig-scatter-loess
+#| fig-cap: "Scatterplot of standardized net migration (Z-Score) and fertility rates across countries with LOESS smoothing line"
+
+# LOESS scatter plot
+ggplot(cleaned_dataset, aes(x = net_migration_z, y = fertility_rate))+
+  geom_point(alpha = 0.1) +
+  geom_smooth(method = "loess", se = FALSE, color = "blue") +
+  labs(
+    title = "Fertility Rate vs. Standardized Net Migration",
+    x = "Net Migration (Z-Score)",
+    y = "Fertility Rate"
+  )
+```
+Based on the above scatter plot, it appears that the relationship between fertility rate and standardized net migration is non-linear. The plot shows that fertility rate tends to be higher when standardized net migration is significantly lower, but declines as net migration approaches average levels. There is then a slight uptick in fertility rate near the mean, followed by a downward trend as migration becomes more strongly positive. This may suggest that both high in- and out-migration is associated with lower fertility rates nationally.
+
+```{r}
+#| label: tbl-summary-overall
+#| tbl-cap: "Overall summary statistics"
+
+cleaned_dataset |>
+  summarize(
+    mean_fertility = mean(fertility_rate, na.rm = TRUE),
+    sd_fertility = sd(fertility_rate, na.rm = TRUE),
+    mean_migration_z = mean(net_migration_z, na.rm = TRUE),
+    sd_migration_z = sd(net_migration_z, na.rm = TRUE),
+    mean_gdp = mean(gdp_2015_usd, na.rm = TRUE),
+    mean_urban = mean(urban_pop_percent, na.rm = TRUE),
+    mean_female_emp = mean(female_emp_ratio, na.rm = TRUE)
+  ) |>
+  gt() |>
+  tab_header(title = "Overall Summary Statistics")
+```
+There are several useful takeaways from the overall summary statistics of the data. The average fertility rate globally is approximately 3.84 births per women, with a considerable amount of variation with a standard deviation of 1.96 which reflects diverse demographics across nations. As expected, due to the standardization of net migration, the mean of the z-score is nearly zero, and the standard deviation is close to 1. The mean GDP is very high at around 1.53 trillion which is most likely skewed due to global superpowers like the United States, China, and Russia. Average urbanization levels are around 50% and the average female employment percentage stands at around 45.9%, which indicates that the countries a part of the data set are in several different developmental stages. Overall, these values provide a useful background for interpreting and modeling the relationship between net migration and fertility rates.
+
+## Regression Modeling
+
+I would now like to fit several linear models to examine how net migration relates to fertility rates across countries and time, including the influence that other confounding socioeconomical factors may have.
+
+```{r}
+#| label: tbl-models
+#| tbl-cap: "Models exploring relationship between standardized net migration and fertility rates across countries and time"
+
+# basic linear model
+model1 <- lm(fertility_rate ~ net_migration_z, data=cleaned_dataset)
+# linear model with controls
+model2 <- lm(fertility_rate ~ net_migration_z + gdp_2015_usd + female_emp_ratio + urban_pop_percent, data = cleaned_dataset)
+# quadratic model
+model3 <- lm(fertility_rate ~ net_migration_z + I(net_migration_z^2) + gdp_2015_usd + female_emp_ratio + urban_pop_percent, data = cleaned_dataset)
+
+modelsummary(
+  list("Basic Linear" = model1, "Linear w/ Controls" = model2, "Quadratic" = model3),
+  stars = TRUE,
+  output = "html"
+)
+```
+I created three different linear regression models to further asses the relationship between standardized net migration and fertility rates. In the basic linear model, there appears to be a significant positive relationship between net migration and fertility (0.074, p < .001). Although, after controlling for gdp, urban population percentage, and female employment ratio, the relationship actually flipped and there was instead a negative relationship (-0.028, p < .05), which indicates that when bringing other developmental factors into account, higher net migration is generally associated with lower fertility. Among all of the control variables, urbanization was significantly and negatively associated with fertility (-0.043, p < .001), while female employment showed a positive relationship (0.005, p < .001). The addition of a quadratic term for net migration did not improve the models fit and also was not statistically significant while on the other hand, the inclusion of socioeconomic controls improved the model's R^2 value significantly from 0.001 to 0.400 while decreasing error from 1.96 to 1.26. This highlights the importance of confounding socioeconomic factors when researching cross-national fertility levels.  

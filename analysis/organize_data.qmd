@@ -23,40 +23,48 @@ world_bank_data <- read_csv(here("data", "data_raw", "world_bank_data.csv"),
 df_long <- world_bank_data |>
   pivot_longer(
     cols = matches("^19|20"),
-    names_to = "Year",
-    values_to = "Value"
+    names_to = "year",
+    values_to = "value"
   ) |>
   mutate(
-    Year = str_extract(Year, "^\\d{4}"), # Extracts first four digits
-    Year = as.integer(Year)
+    year = str_extract(year, "^\\d{4}"), # Extracts first four digits
+    year = as.integer(year)
   ) |>
   rename(
-    CountryCode = `Country Code`,
-    Country = `Country Name`,
-    Indicator = `Series Name`,
-    SeriesCode = `Series Code`,
+    country_code = `Country Code`,
+    country = `Country Name`,
+    indicator = `Series Name`,
+    series_code = `Series Code`,
   )
 
 df_long_clean <- df_long |>
-  filter(Indicator != "", !is.na(Indicator)) |> # filter out missing Indicator rows
-  group_by(Country, CountryCode, Year, Indicator) |>
-  summarize(Value = mean(Value, na.rm = TRUE, .groups = "drop"))
+  filter(indicator != "", !is.na(indicator)) |> # filter out missing Indicator rows
+  group_by(country, country_code, year, indicator) |>
+  summarize(value = mean(value, na.rm = TRUE, .groups = "drop"))
 
 # wide-format data frame 
 df_wide <- df_long_clean |>
   pivot_wider(
-    names_from = Indicator,
-    values_from = Value
+    names_from = indicator,
+    values_from = value
   )
 
 cleaned_dataset <- df_wide |>
   rename(
-    NetMigration = `Net migration`,
-    FertilityRate = `Fertility rate, total (births per woman)`,
-    GDP_2015USD = `GDP (constant 2015 US$)`,
-    UrbanPopPercent = `Urban population (% of total population)`,
-    FemaleEmpRatio = `Employment to population ratio, 15+, female (%) (modeled ILO estimate)`
+    net_migration = `Net migration`,
+    fertility_rate = `Fertility rate, total (births per woman)`,
+    gdp_2015_usd = `GDP (constant 2015 US$)`,
+    urban_pop_percent = `Urban population (% of total population)`,
+    female_emp_ratio = `Employment to population ratio, 15+, female (%) (modeled ILO estimate)`
   )
+
+# Standardize net migration within each country (solution to missing population data for net migration rate calculation)
+cleaned_dataset <- cleaned_dataset |>
+  group_by(country) |>
+  mutate(
+    net_migration_z = scale(net_migration)
+  ) |>
+  ungroup()
 ```
 
 ```{r}
