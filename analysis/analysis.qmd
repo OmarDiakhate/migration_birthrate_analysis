@@ -101,17 +101,69 @@ I would now like to fit several linear models to examine how net migration relat
 #| label: tbl-models
 #| tbl-cap: "Models exploring relationship between standardized net migration and fertility rates across countries and time"
 
-# basic linear model
-model1 <- lm(fertility_rate ~ net_migration_z, data=cleaned_dataset)
 # linear model with controls
-model2 <- lm(fertility_rate ~ net_migration_z + gdp_2015_usd + female_emp_ratio + urban_pop_percent, data = cleaned_dataset)
+model1 <- lm(fertility_rate ~ net_migration_z + gdp_2015_usd + female_emp_ratio + urban_pop_percent, data = cleaned_dataset)
 # quadratic model
-model3 <- lm(fertility_rate ~ net_migration_z + I(net_migration_z^2) + gdp_2015_usd + female_emp_ratio + urban_pop_percent, data = cleaned_dataset)
+model2 <- lm(fertility_rate ~ net_migration_z + I(net_migration_z^2) + gdp_2015_usd + female_emp_ratio + urban_pop_percent, data = cleaned_dataset)
+
+# Quad-Log Model
+model3 <- lm(fertility_rate ~ log(net_migration_z) + net_migration_z + I(net_migration_z^2) + gdp_2015_usd + female_emp_ratio + urban_pop_percent, data = cleaned_dataset)
 
 modelsummary(
-  list("Basic Linear" = model1, "Linear w/ Controls" = model2, "Quadratic" = model3),
+  list("Linear" = model1, "Quadratic" = model2, "Quad-Log" = model3),
   stars = TRUE,
   output = "html"
 )
 ```
-I created three different linear regression models to further asses the relationship between standardized net migration and fertility rates. In the basic linear model, there appears to be a significant positive relationship between net migration and fertility (0.074, p < .001). Although, after controlling for gdp, urban population percentage, and female employment ratio, the relationship actually flipped and there was instead a negative relationship (-0.028, p < .05), which indicates that when bringing other developmental factors into account, higher net migration is generally associated with lower fertility. Among all of the control variables, urbanization was significantly and negatively associated with fertility (-0.043, p < .001), while female employment showed a positive relationship (0.005, p < .001). The addition of a quadratic term for net migration did not improve the models fit and also was not statistically significant while on the other hand, the inclusion of socioeconomic controls improved the model's R^2 value significantly from 0.001 to 0.400 while decreasing error from 1.96 to 1.26. This highlights the importance of confounding socioeconomic factors when researching cross-national fertility levels.  
+I created three different regression models to further asses the relationship between standardized net migration and fertility rates. In the linear model, there appears to be a significant negative relationship between net migration and fertility (-0.028, p < .05). This relationship then remained consistent with the quadratic model with a negative relationship (-0.028, p < .05), and the squared term for net migration was not significant, indicating that the addition of a quadratic component did not improve the model. Although, the "Quad-Log" or log-quadratic model which now includes a log-transformed net migration term, the relationship between net migration and fertility becomes significantly positive (0.205, p < 0.5), suggesting a non-linear dynamic when logarithmic changes are taken into consideration. Among all of the control variables, urbanization was significantly and negatively associated with fertility (-0.043 to -0.045, p < .001), while female employment showed a positive relationship in the linear and quadratic models (0.005 and 0.004 respectively, p < .001) though it loses significance in the log-quadratic model. The addition of a quadratic term for net migration did not improve the models fit and also was not statistically significant while on the other hand, the inclusion of the logarithmic dimension improved the model's R^2 value significantly from 0.400 in the first two models, to 0.416, indicating a better fit. These results highlight the complex and potentially non-linear role that migration plays when it comes to fertility, and they show the importance of taken socioeconomic factors into account as well in cross-national fertility research.
+
+```{r}
+#| label: fig-residuals-linear
+#| fig-cap: "Residual plot for Linear Model"
+
+
+# Linear Model residuals by fitted value plot 
+ggplot(augment(model1), aes(x=.fitted, y=.resid)) +
+  geom_point() +
+  geom_hline(yintercept=0, linetype=2) +
+  geom_smooth(se=FALSE) +
+  labs(
+    title = "Linear Model Residuals by Fitted Value Plot",
+    x = "Fitted Values",
+    y = "Linear Model Residuals"
+  )
+```
+
+```{r}
+#| label: fig-residuals-quadratic
+#| fig-cap: "Residual plot for Quadratic Model"
+
+
+# Quadratic Model residuals by fitted value plot 
+ggplot(augment(model2), aes(x=.fitted, y=.resid)) +
+  geom_point() +
+  geom_hline(yintercept=0, linetype=2) +
+  geom_smooth(se=FALSE) +
+  labs(
+    title = "Quadratic Residuals by Fitted Value Plot",
+    x = "Fitted Values",
+    y = "Quadratic Model Residuals"
+  )
+```
+
+```{r}
+#| label: fig-residuals-log-quadratic
+#| fig-cap: "Residual plot for Log-Quadratic Model"
+
+
+# Quad-Log Model residuals by fitted value plot 
+ggplot(augment(model3), aes(x=.fitted, y=.resid)) +
+  geom_point() +
+  geom_hline(yintercept=0, linetype=2) +
+  geom_smooth(se=FALSE) +
+  labs(
+    title = "Quad-Log Model Residuals by Fitted Value Plot",
+    x = "Fitted Values",
+    y = "Quad-Log Model Residuals"
+  )
+```

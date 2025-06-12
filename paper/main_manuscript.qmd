@@ -1,8 +1,10 @@
 ---
-title: "Exploring the Correlation Between Net Migration Rates and Birth Rates Overtime: A Cross-National Study"
+title: "Exploring the Correlation Between Net Migration Rates and Fertility Rates Overtime: A Cross-National Study"
 shorttitle: "Paper"
-abstract: An Abstract
-keywords: [keyword1, keyword2]
+
+abstract: This study investigates the relationship between net migration rates and total fertility rates (TFR) across 217 countries over a 60-year period using data from the World Bank. By estimating linear, quadratic, and log-quadratic regression models, the analysis finds evidence of both negative and non-linear associations between migration and fertility, with socioeconomic factors such as urbanization and female employment playing significant mediating roles. These findings suggest that migration’s impact on fertility is very complex and context-dependent, emphasizing the need for nuanced, multi-dimensional approaches in demographic research.
+
+keywords: [migration, fertility, socioeconomic development, regression analysis, demographic change]
 thanks: Thanks to everyone for checking this out.
 reference-section-title: References
 bibliography: ../bibliography/project.bib
@@ -54,4 +56,10 @@ This data was both collected and aggregated by the World Bank from international
 
 # Results
 
+In order to investigate how standardized net migration relates to fertility rates, I estimated three regression models to further asses the relationship: linear, quadratic, and log-quadratic. In the linear model, there appears to be a significant negative relationship between net migration and fertility (-0.028, p < .05). This relationship then remained consistent with the quadratic model with a negative relationship (-0.028, p < .05), and the squared term for net migration was not significant, indicating that the addition of a quadratic component did not improve the model. Although, in the log-quadratic model which now includes a log-transformed net migration term, the relationship between net migration and fertility becomes significantly positive (0.205, p < 0.5), suggesting a non-linear dynamic when logarithmic changes are taken into consideration. Among all of the control variables, urbanization was significantly and negatively associated with fertility (-0.043 to -0.045, p < .001), while female employment showed a positive relationship in the linear and quadratic models (0.005 and 0.004 respectively, p < .001) though it loses significance in the log-quadratic model. The addition of a quadratic term for net migration did not improve the models fit and also was not statistically significant while on the other hand, the inclusion of the logarithmic dimension improved the model's R^2 value significantly from 0.400 in the first two models, to 0.416, indicating a better fit. These results highlight the complex and potentially non-linear role that migration plays when it comes to fertility, and they show the importance of taken socioeconomic factors into account as well in cross-national fertility research.
+
 # Conclusions
+
+The analysis in this project aimed to explore how changes in net migration rates correlate with total fertility rates (TFR) in host countries over time, while also accounting for key socioeconomic factors. The results from the linear and quadratic models showed a significant negative relationship between net migration and fertility, which suggested that higher migration is generally associated with lower fertility. However, the log-quadratic model showed a significant positive relationship, which indicates a possible non-linear effect where the impact of migration varies depending on its scale. Taking the socioeconomic factors into consideration, urbanization consistently showed a strong negative effect on fertility, while female employment was positively associated in the more simple models. These findings drive home the importance of including socioeconomic context when researching fertility patterns cross-nationally. Some limitations of the research included the assumption of immediate effects and overtime data quality. Future research could benefit from including aspects like time-lagged variables or by exploring regional differences Overall, this study contributes to the understanding of the relationship between migration and national fertility rates, thus highlighting the importance of socioeconomic context and non-linearity in shaping demographic trends. These findings could help inform both on an academic level and in regards to policy discussions on the topic of migration, fertility, and overall national development.
+
+
